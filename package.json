@@ -1,7 +1,7 @@
 {
   "name": "vaso",
   "version": "0.0.1",
-  "description": "A module to help develop simple code experiments",
+  "description": "A module to help develop experiments",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
