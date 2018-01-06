@@ -27,8 +27,8 @@ gulp.task('server', function() {
     open: false
   });
 
-  gulp.watch(['./bundle.js', './css/main.css', "./index.html"]).on('change', refrash);
-  watch('./css/**/*.css', refrash);
+  gulp.watch(['./bundle.js', './css/main.css', "./index.html"]).on('change', refresh);
+  watch('./css/**/*.css', refresh);
 
 
   watch('./js/**/*.js', function () {
@@ -39,7 +39,7 @@ gulp.task('server', function() {
 
 });
 
-function refrash(){
+function refresh(){
 
   reload_count++;
   gutil.log("Reloaded " + gutil.colors.magenta(reload_count) + ' times');
