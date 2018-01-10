@@ -27,7 +27,7 @@ gulp.task('server', function() {
     open: false
   });
 
-  gulp.watch(['./bundle.js', './css/main.css', "./index.html"]).on('change', refresh);
+  gulp.watch(['./bundle.js', './index.html']).on('change', refresh);
   watch('./css/**/*.css', refresh);
 
 
