@@ -49,9 +49,11 @@ function build_task() {
 
       let contents = "//" + result[1] + " not found";
 
-      if(fs.existsSync(result[1])){
+      var file = path.resolve("./js/" + result[1]);
 
-        contents = fs.readFileSync(result[1], 'utf8');
+      if(fs.existsSync(file)){
+
+        contents = fs.readFileSync(file, 'utf8');
 
       } else {
 
