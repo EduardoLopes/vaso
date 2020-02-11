@@ -8,7 +8,6 @@ const fs = require('fs');
 const path = require('path');
 const replace = require('gulp-replace');
 const rename = require("gulp-rename");
-const watch = require('gulp-watch');
 
 let reload_count = 0;
 
@@ -27,21 +26,15 @@ function server_task() {
     open: false
   });
 
-  gulp.watch(['./bundle.js', './index.html']).on('change', refresh);
-  watch('./css/**/*.css', refresh);
-
-
-  watch('./js/**/*.js', function () {
-
-    build_task();
-
-  });
+  gulp.watch(['./bundle.js', './index.html'], refresh);
+  gulp.watch('./css/**/*.css', refresh);
+  gulp.watch('./js/**/*.js', build_task);
 
 }
 
-function build_task() {
+function build_task(done) {
 
-  gulp.src('./js/main.js')
+  return gulp.src('./js/main.js')
     .pipe(replace(/\/\/js: (.*)/g, function(match) {
 
       let regex = /\/\/js: (.*)/;
@@ -67,16 +60,18 @@ function build_task() {
 
 }
 
-function copy_empty_project(){
+function copy_empty_project(done){
 
   if (!fs.existsSync(args[1])){
 
-    gulp.src(path.dirname(fs.realpathSync(__filename)) + "/empty/**/*")
+    return gulp.src(path.dirname(fs.realpathSync(__filename)) + "/empty/**/*")
       .pipe(gulp.dest(args[1]))
 
   } else {
     log(args[1] + " already exists");
   }
+
+  if(done) done();
 
 }
 
