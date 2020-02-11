@@ -3,7 +3,7 @@
 const gulp = require('gulp');
 const browserSync = require('browser-sync');
 const reload = browserSync.reload;
-const gutil = require('gulp-util');
+const log = require('fancy-log');
 const fs = require('fs');
 const path = require('path');
 const replace = require('gulp-replace');
@@ -47,21 +47,19 @@ function build_task() {
       let regex = /\/\/js: (.*)/;
       let result = regex.exec(match);
 
-      let contents = "//" + result[1] + " not found";
 
       var file = path.resolve("./js/" + result[1]);
 
       if(fs.existsSync(file)){
 
-        contents = fs.readFileSync(file, 'utf8');
+        return fs.readFileSync(file, 'utf8');
 
       } else {
 
-        console.log(contents);
+        log.error(`Not Found: ${file}`)
+        return `//Not Found: ${file}`;
 
       }
-
-      return contents;
 
     }))
     .pipe(rename("bundle.js"))
@@ -72,7 +70,7 @@ function build_task() {
 function refresh(){
 
   reload_count++;
-  gutil.log("Reloaded " + gutil.colors.magenta(reload_count) + ' times');
+  log(`Reloaded ${reload_count} times`);
   reload();
 
 }
@@ -88,7 +86,7 @@ if(args[0] == "create"){
       .pipe(gulp.dest(args[1]))
 
   } else {
-    console.log(args[1] + " already exists");
+    log(args[1] + " already exists");
   }
 
 } else if(args[0] == "build"){
