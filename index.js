@@ -67,6 +67,19 @@ function build_task() {
 
 }
 
+function copy_empty_project(){
+
+  if (!fs.existsSync(args[1])){
+
+    gulp.src(path.dirname(fs.realpathSync(__filename)) + "/empty/**/*")
+      .pipe(gulp.dest(args[1]))
+
+  } else {
+    log(args[1] + " already exists");
+  }
+
+}
+
 function refresh(){
 
   reload_count++;
@@ -78,23 +91,16 @@ function refresh(){
 gulp.task('server', server_task);
 gulp.task('build', build_task);
 
-if(args[0] == "create"){
+switch (args[0]) {
+  case "create":
+    copy_empty_project();
+    break;
 
-  if (!fs.existsSync(args[1])){
+  case "build":
+    build_task();
+    break;
 
-    gulp.src(path.dirname(fs.realpathSync(__filename)) + "/empty/**/*")
-      .pipe(gulp.dest(args[1]))
-
-  } else {
-    log(args[1] + " already exists");
-  }
-
-} else if(args[0] == "build"){
-
-  build_task();
-
-} else {
-
-  server_task();
-
+  default:
+    server_task();
+    break;
 }
