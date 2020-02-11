@@ -14,9 +14,9 @@ let reload_count = 0;
 
 var args = process.argv.slice(2);
 
-gulp.task('server', function() {
+function server_task() {
 
-  gulp.start('build');
+  build_task();
 
   browserSync({
     server: {
@@ -33,21 +33,13 @@ gulp.task('server', function() {
 
   watch('./js/**/*.js', function () {
 
-    gulp.start('build');
+    build_task();
 
   });
 
-});
-
-function refresh(){
-
-  reload_count++;
-  gutil.log("Reloaded " + gutil.colors.magenta(reload_count) + ' times');
-  reload();
-
 }
 
-gulp.task('build', function() {
+function build_task() {
 
   gulp.src('./js/main.js')
     .pipe(replace(/\/\/js: (.*)/g, function(match) {
@@ -73,7 +65,18 @@ gulp.task('build', function() {
     .pipe(rename("bundle.js"))
     .pipe(gulp.dest('./'));
 
-});
+}
+
+function refresh(){
+
+  reload_count++;
+  gutil.log("Reloaded " + gutil.colors.magenta(reload_count) + ' times');
+  reload();
+
+}
+
+gulp.task('server', server_task);
+gulp.task('build', build_task);
 
 if(args[0] == "create"){
 
@@ -88,10 +91,10 @@ if(args[0] == "create"){
 
 } else if(args[0] == "build"){
 
-  gulp.start('build');
+  build_task();
 
 } else {
 
-  gulp.start('server');
+  server_task();
 
 }
